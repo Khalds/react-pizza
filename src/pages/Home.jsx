@@ -8,16 +8,16 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice';
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
+import axios from 'axios';
 
 const Home = () => {
   const { searchValue } = useContext(SearchContext);
 
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const { categoryId, sort } = useSelector((state) => state.filter);
+  const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
   const dispatch = useDispatch();
 
@@ -25,21 +25,36 @@ const Home = () => {
     dispatch(setCategoryId(id));
   };
 
-  const category = categoryId > 0 ? `category=${categoryId}` : '';
-  const sortBy = sort.sortProperty.replace('-', '');
-  const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
-  const search = searchValue ? `&search$={searchValue}` : '';
+  const onChangePage = (number) => {
+    dispatch(setCurrentPage(number));
+  };
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://645e3f4912e0a87ac0eb6446.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setPizzas(data);
+
+    const category = categoryId > 0 ? `category=${categoryId}` : '';
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
+    const search = searchValue ? `&search$={searchValue}` : '';
+
+    // fetch(
+    // `https://645e3f4912e0a87ac0eb6446.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setPizzas(data);
+    //     setIsLoading(false);
+    //   });
+
+    axios
+      .get(
+        `https://645e3f4912e0a87ac0eb6446.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
+      )
+      .then((res) => {
+        setPizzas(res.data);
         setIsLoading(false);
       });
+
     window.scrollTo(0, 0);
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
@@ -57,7 +72,7 @@ const Home = () => {
               .filter((pizza) => pizza.title.toLowerCase().includes(searchValue.toLowerCase()))
               .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
       </div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
 };
