@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
-const Home = () => {
+const Home: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = useRef(false);
@@ -27,11 +27,11 @@ const Home = () => {
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
+  const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
   };
 
@@ -42,6 +42,7 @@ const Home = () => {
     const search = searchValue ? `&search$={searchValue}` : '';
 
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         category,
         sortBy,
@@ -102,8 +103,10 @@ const Home = () => {
           {status === 'Loading'
             ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
             : items
-                .filter((pizza) => pizza.title.toLowerCase().includes(searchValue.toLowerCase()))
-                .map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
+                .filter((pizza: any) =>
+                  pizza.title.toLowerCase().includes(searchValue.toLowerCase()),
+                )
+                .map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza} />)}
         </div>
       )}
 
