@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
+import { CartItem, addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 import { FC } from 'react';
 
 type CartItemProps = {
@@ -12,11 +12,11 @@ type CartItemProps = {
   imageUrl: string;
 };
 
-const CartItem: FC<CartItemProps> = ({ id, title, type, size, price, count, imageUrl }) => {
+const CartItemBlock: FC<CartItemProps> = ({ id, title, type, size, price, count, imageUrl }) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as CartItem));
   };
   const onClickMinus = () => {
     count > 1 ? dispatch(minusItem(id)) : dispatch(removeItem(id));
@@ -103,4 +103,4 @@ const CartItem: FC<CartItemProps> = ({ id, title, type, size, price, count, imag
     </div>
   );
 };
-export default CartItem;
+export default CartItemBlock;
