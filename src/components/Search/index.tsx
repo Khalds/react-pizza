@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { useCallback, useRef, useState } from 'react';
@@ -24,7 +24,7 @@ const Search: FC = () => {
     }, 1000),
     [],
   );
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     updateSearchValue(e.target.value);
   };

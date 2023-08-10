@@ -8,6 +8,10 @@ type ListItem = {
   sortProperty: string;
 };
 
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+
 export const list: ListItem[] = [
   { name: 'популярности(DESC)', sortProperty: 'rating' },
   { name: 'популярности(ASC)', sortProperty: '-rating' },
@@ -31,12 +35,14 @@ function Sort() {
   };
 
   useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      const path = e.composedPath ? e.composedPath() : e.path;
-      if (!path?.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+
+      if (sortRef.current && !_event.path?.includes(sortRef.current)) {
         setPopupOpen(false);
       }
     };
+
     document.body.addEventListener('click', handleClickOutside);
 
     return () => document.body.removeEventListener('click', handleClickOutside);
