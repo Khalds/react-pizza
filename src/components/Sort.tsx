@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectSort, setSort, sortPropertyEnum } from '../redux/slices/filterSlice';
+import { FC, memo, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { SortType, setSort, sortPropertyEnum } from '../redux/slices/filterSlice';
 import { useEffect } from 'react';
 
 type ListItem = {
@@ -12,6 +12,10 @@ type PopupClick = MouseEvent & {
   path: Node[];
 };
 
+type SortPopupProps = {
+  sort: SortType;
+};
+
 export const list: ListItem[] = [
   { name: 'популярности(DESC)', sortProperty: sortPropertyEnum.RATING_DESC },
   { name: 'популярности(ASC)', sortProperty: sortPropertyEnum.RATING_ASC },
@@ -21,8 +25,7 @@ export const list: ListItem[] = [
   { name: 'алфавиту(ASC)', sortProperty: sortPropertyEnum.TITLE_ASC },
 ];
 
-function Sort() {
-  const sort = useSelector(selectSort);
+const SortPopup: FC<SortPopupProps> = memo(({ sort }) => {
   const sortRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
@@ -81,5 +84,5 @@ function Sort() {
       )}
     </div>
   );
-}
-export default Sort;
+});
+export default SortPopup;

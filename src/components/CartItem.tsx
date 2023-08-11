@@ -1,6 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { CartItem, addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 import { FC } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { CartItem, addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
 type CartItemProps = {
   id: string;
@@ -19,7 +20,7 @@ const CartItemBlock: FC<CartItemProps> = ({ id, title, type, size, price, count,
     dispatch(addItem({ id } as CartItem));
   };
   const onClickMinus = () => {
-    count > 1 ? dispatch(minusItem(id)) : dispatch(removeItem(id));
+    dispatch(minusItem(id));
   };
 
   const onClickRemove = () => {
@@ -38,7 +39,8 @@ const CartItemBlock: FC<CartItemProps> = ({ id, title, type, size, price, count,
         </p>
       </div>
       <div className="cart__item-count">
-        <div
+        <button
+          disabled={count === 1}
           onClick={onClickMinus}
           className="button button--outline button--circle cart__item-count-minus">
           <svg
@@ -56,7 +58,7 @@ const CartItemBlock: FC<CartItemProps> = ({ id, title, type, size, price, count,
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
         <div
           onClick={onClickPlus}
