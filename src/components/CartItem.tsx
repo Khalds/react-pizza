@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { CartItem, addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
+import { addItem, minusItem, removeItem } from '../redux/cart/slice';
+import { CartItem } from '../redux/cart/types';
 
 type CartItemProps = {
   id: string;
@@ -81,7 +82,7 @@ const CartItemBlock: FC<CartItemProps> = ({ id, title, type, size, price, count,
         </div>
       </div>
       <div className="cart__item-price">
-        <b>{price} ₽</b>
+        <b>{price * count} ₽</b>
       </div>
       <div className="cart__item-remove">
         <div onClick={onClickRemove} className="button button--outline button--circle">
