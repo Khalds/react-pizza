@@ -129,6 +129,28 @@ body {
   }
 }
 
+.full-pizza {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
+}
+
+.pizza-info {
+  padding: 60px;
+  margin: auto;
+  width: 60%;
+
+  p {
+    font-size: 18px;
+    margin: 60px 0px;
+    text-align: justify;
+  }
+
+  h2 {
+    font-weight: 700;
+  }
+}
+
 .cart {
   &__top {
     display: flex;

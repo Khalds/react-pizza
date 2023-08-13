@@ -3,10 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import logoSvg from '../assets/img/pizza-logo.svg';
-import Search from './Search';
 import { selectCart } from '../redux/cart/selectors';
+import { Search } from './Search';
 
-const Header: FC = () => {
+export const Header: FC = () => {
   const { totalPrice, items } = useSelector(selectCart);
   const location = useLocation();
   const isMounted = useRef(false);
@@ -75,4 +75,3 @@ const Header: FC = () => {
     </div>
   );
 };
-export default Header;

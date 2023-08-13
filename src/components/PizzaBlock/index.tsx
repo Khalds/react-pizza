@@ -19,7 +19,7 @@ type PizzaBlockProps = {
   imageUrl: string;
 };
 
-const PizzaBlock: FC<PizzaBlockProps> = ({ id, title, types, sizes, price, imageUrl }) => {
+export const PizzaBlock: FC<PizzaBlockProps> = ({ id, title, types, sizes, price, imageUrl }) => {
   const cartItem = useSelector(selectCartItemById(id));
 
   const dispatch = useDispatch();
@@ -95,4 +95,3 @@ const PizzaBlock: FC<PizzaBlockProps> = ({ id, title, types, sizes, price, image
     </div>
   );
 };
-export default PizzaBlock;

@@ -1,23 +1,16 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
-import Categories from '../components/Categories';
-import Sort, { list } from '../components/Sort';
-import PizzaBlock from '../components/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
+import { Categories, Sort, PizzaBlock, Pagination, Skeleton } from '../components';
+
 import { useAppDispatch } from '../redux/store';
 import { selectFilter } from '../redux/filter/selectors';
 import { selectPizzaData } from '../redux/pizza/selectors';
-import { setCategoryId, setCurrentPage } from '../redux/filter/slice';
 import { fetchPizzas } from '../redux/pizza/asyncActions';
+import { setCategoryId, setCurrentPage } from '../redux/filter/slice';
 
 const Home: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
 
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
@@ -50,46 +43,6 @@ const Home: FC = () => {
   useEffect(() => {
     getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
-
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     const queryString = qs.stringify({
-  //       sortProperty: sort.sortProperty,
-  //       categoryId,
-  //       currentPage,
-  //     });
-
-  //     navigate(`?${queryString}`);
-  //   }
-  //   isMounted.current = true;
-  // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
-
-  // useEffect(() => {
-  //   if (window.location.search) {
-  //     const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
-
-  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy);
-
-  //     dispatch(
-  //       setFilters({
-  //         searchValue: params.search,
-  //         categoryId: Number(params.category),
-  //         currentPage: Number(params.currentPage),
-  //         sort: sort || list[0],
-  //       }),
-  //     );
-  //     isSearch.current = true;
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-
-  //   if (!isSearch.current) {
-  //     getPizzas();
-  //   }
-  //   isSearch.current = false;
-  // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   return (
     <div className="container">
